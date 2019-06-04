@@ -61,3 +61,11 @@ const isOdd: number => Writer<bool> =
     The embellished identity function takes the form
     \inputminted{typescript}{content/code-listings/writer-id.ts}
 \end{definition}
+
+\begin{remark}
+    It is possible to generalize such construction for arbitrary monoids. 
+    \begin{itemize}
+        \item Within \mintinline{hs}{compose} one would use \mintinline{hs}{mappend}.
+        \item Within \mintinline{hs}{identity} one would use the neutral element \mintinline{hs}{mempty}.
+    \end{itemize}
+\end{remark}

@@ -1,0 +1,63 @@
+\section{Kleisli Categories}
+
+Managing side-effects, and separating concerns.
+
+\subsection{Writer Category}
+
+\begin{example}
+    To abstract concerns such as logging, it may be possible to utilize \textit{embellished} or \textit{decorated} functions.
+    
+    For instance, given the embellished function \mintinline{typescript}{isEven} which not only carries out the primary predicate functionality, it also produces a log message as output. Together, they are returned as a 2-tuple
+    \begin{minted}{typescript}
+function isEven(n: number): [bool, string] {
+    return [ n % 2 === 0, "isEven(number) called" ];
+}
+    \end{minted}
+    
+    Given another embellished function \mintinline{typescript}{negate} which also produces a log message
+    \begin{minted}{typescript}
+function negate(b: bool): [ bool, string ] {
+    return [ !b, "Negate(bool) called" ];
+}
+    \end{minted}
+    
+    Their composition would not be via \mintinline{hs}{negate . isEven} since their input output types mismatch; but, something like
+    \begin{minted}{typescript}
+function isOdd(n: number): [ bool, string ] {
+    const [ pred, log1 ] = isEven(n);
+    const [ neg, log2 ] = negate(pred);
+    return [ neg, log1 + log2 ];
+}
+    \end{minted}
+\end{example}
+
+\begin{definition}[Composing Embellished Functions]
+    The steps to composing such embellished functions are:
+    \begin{enumerate}
+        \item Execute embellished function of first morphism.
+        \item Extract first component of result pair, pass it to embellished function of second morphism.
+        \item Concatenate second component of first result and second component of second result.
+        \item Construct and return new pair with first component of final result with concatenated second components.
+    \end{enumerate}
+\end{definition}
+
+\begin{remark}
+    In TypeScript, this would be implemented via something like
+    \inputminted{typescript}{content/code-listings/writer-compose.ts}
+    
+    Then the two embellished functions \mintinline{typescript}{negate} and \mintinline{typescript}{isEven} can now be composed
+    
+    \begin{minted}{typescript}
+const isOdd: number => Writer<bool> = 
+    composeW(isEven, negate);
+    \end{minted}
+\end{remark}
+
+\begin{remark}
+    In the case of \mintinline{typescript}{Writer}s, needing to compose them creates the need for identity morphisms.
+\end{remark}
+
+\begin{definition}[Identity Embellished Function]
+    The embellished identity function takes the form
+    \inputminted{typescript}{content/code-listings/writer-id.ts}
+\end{definition}

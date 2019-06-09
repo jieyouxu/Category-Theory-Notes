@@ -1,3 +1,3 @@
-function identity<A>(A value): Writer<A> {
+function identity<A>(value: A): Writer<A> {
     return [value, ""];
 }

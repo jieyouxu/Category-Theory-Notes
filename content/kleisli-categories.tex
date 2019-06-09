@@ -69,3 +69,68 @@ const isOdd: number => Writer<bool> =
         \item Within \mintinline{hs}{identity} one would use the neutral element \mintinline{hs}{mempty}.
     \end{itemize}
 \end{remark}
+
+\subsection{Writer in Haskell}
+
+\begin{definition}[Writer Type]
+    The \mintinline{hs}{Writer} \textit{type} can be defined as
+    \begin{minted}{hs}
+type Writer a = (a, String)
+    \end{minted}
+\end{definition}
+
+\begin{definition}[Writer Morphism]
+    Morphisms are functions with arbitrary type as source and some \mintinline{hs}{Writer} type as target.
+    \begin{minted}{hs}
+a -> Writer b
+    \end{minted}
+\end{definition}
+
+\begin{definition}[Writer Composition]
+    A \textit{composition operator} (the \enquote{\textit{fish}} operator) is defined as
+    \begin{figure}[H]
+        \centering
+        \inputminted{hs}{content/code-listings/fish.hs}
+        \caption{Composition (fish) operator.}
+        \label{fig:fish-operator}
+    \end{figure}
+    
+    Notice that the composition operator has:
+    \begin{itemize}
+        \item Two functions as \textit{input}:
+        \begin{enumerate}
+            \item \mintinline{hs}{(a -> Writer b)}
+            \item \mintinline{hs}{(b -> Writer c)}
+        \end{enumerate}
+        \item Returning a function as \textit{output}:
+        \begin{enumerate}
+            \item \mintinline{hs}{(a -> Writer c)}
+        \end{enumerate}
+    \end{itemize}
+    
+    Then the composition operator is defined as
+    \begin{figure}[H]
+        \centering
+        \inputminted{hs}{content/code-listings/fish-def.hs}
+        \caption{Composition (fish) operator definition.}
+        \label{fig:fish-definition}
+    \end{figure}
+\end{definition}
+
+\begin{definition}[Writer Identity Morphism]
+    The \textit{identity morphism} for the \mintinline{hs}{Writer} category is known as the \mintinline{hs}{return} function, defined as
+    \begin{figure}[H]
+        \centering
+        \inputminted{hs}{content/code-listings/return.hs}
+        \caption{Writer category identity morphism, \mintinline{hs}{return}.}
+        \label{fig:return-writer}
+    \end{figure}
+\end{definition}
+
+\begin{example}
+    Let there be two embellished functions, \mintinline{hs}{isEven} and \mintinline{hs}{negate}, just like the previous definition in typescript. Let them be redefined in Haskell as
+    \inputminted{hs}{content/code-listings/embellished-functions-iseven-negate.hs}
+    
+    Then they can be composed to give
+    \inputminted{hs}{content/code-listings/embellished-composition-isodd.hs}
+\end{example}

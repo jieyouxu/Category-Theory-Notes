@@ -134,3 +134,21 @@ a -> Writer b
     Then they can be composed to give
     \inputminted{hs}{content/code-listings/embellished-composition-isodd.hs}
 \end{example}
+
+\subsection{Kleisli Categories}
+
+\begin{definition}[Kleisli Category]
+    The \textit{Kleisli} category is based on a \textit{monad}. It has:
+    \begin{itemize}
+        \item \textit{Types} as \textit{objects}.
+        \item \textit{Morphisms} from type $A$ to type $B$ are functions with source of type $A$, and target of some type derived from $B$ via some embellishment.
+    \end{itemize}
+    
+    Each Kleisli category has its own rules for composing embellished morphisms (and hence custom identity morphisms).
+\end{definition}
+
+\begin{remark}
+    The previous monad is the \textit{writer monad}, useful for logging execution of functions. Notice that it is a specialization of embedding effects in pure computations.
+    
+    The Kleisli category extends previous Set category to add additional power in representing composition of embellished functions, and their composition is not just piping output. How morphisms are composed is here an additional degree of freedom.
+\end{remark}
